@@ -15,10 +15,13 @@ const serpmeKahvalti = {isim: "Serpme Kahvaltı", fiyat: 16, kategori:"Kahvaltı
 */
 
 
-function MenuElemaniOlustur(/*Kodlar buraya*/){
+function MenuElemaniOlustur(/*Kodlar buraya*/name, price, category){
 	/*Kodlar buraya*/
+	const newObject = {isim: name, fiyat: price, kategori: category};
+	return newObject;
 }
 
+console.log(MenuElemaniOlustur('Cheeseburger', 8, 'Burgerler'));
 
 
 /*  Görev 1b (otomatik test yok): 
@@ -49,11 +52,27 @@ function MenuElemaniOlustur(/*Kodlar buraya*/){
 const burger = {
 	isim: "Burger", 
 	fiyat: 18, 
-	kategori: "Öğle Yemeği", 
+	kategori: "Öğle Yemeği",
 
+	indirim : function(consumerType){
+		if (consumerType === "öğretmen") {
+			let indirimliFiyat = 0.75 * this.fiyat;
+			return indirimliFiyat;  
+		}
+		else if (consumerType === "diğer") {
+			let indirimliFiyat = 0.9 * this.fiyat;
+			return indirimliFiyat;
+		}
+		else if	(consumerType === "öğrenci") {
+			let indirimliFiyat = 0.75 * this.fiyat;
+			return indirimliFiyat;	
+		}
+	}
 }
 
-
+console.log(burger.indirim("öğretmen"));
+console.log(burger.indirim("diğer"));
+console.log(burger.indirim("öğrenci"));
 
 ///////////////Değerlendirmeler (MVP)///////////////////
 const degerlendirmeler = [
@@ -72,15 +91,20 @@ const degerlendirmeler = [
 	1. Sadece Ahmet'in geribildirimini konsolda görüntüleyin - fonksiyona gerek yok
 */
 
-
+const objectAhmet = degerlendirmeler.find(obj => obj.isim === "Ahmet");
+console.log(objectAhmet.geribildirim);
 
 /*  Görev 4 (ototest yok):  
 	Reyna'nın geribildirimi girilmemiş! Aşağıdakileri uygulayın: (fonksiyona gerek yok) 
 	1. Bu geribildirimi Reyna'nın değerlendirmesine ekleyin - "bu mekan bir harika dostum, yine de garsonun gülümsememesinden puan kırdım"
 	2. degerlendirmeler dizisini konsolda görüntüleyerek çalışmanızı kontrol edin
 */
+const objectReyna = degerlendirmeler.find(obj => obj.isim === "Reyna");
+if (objectReyna.geribildirim === "") {
+	objectReyna.geribildirim = "bu mekan bir harika dostum, yine de garsonun gülümsememesinden puan kırdım";
+}
 
-
+console.log(degerlendirmeler);
 
 /*  Görev 5: 
 	isim, puan, geribildirim'i içeren bir değerlendirme nesnesi oluşturup, yeni değerlendirmeyi mevcut dizinin(array) sonuna ekleyip sonuç dizisini döndüren bir fonksiyon tanımlayın. 
@@ -94,12 +118,14 @@ const degerlendirmeler = [
 */
 
 
-function DegerledirmeEkle(/*Kodlar buraya */){
+function DegerledirmeEkle(/*Kodlar buraya */degerlendirmeler, isim, puan, geribildirim){
 	/*Kodlar buraya */
-	
+	const newObj = {isim: isim, puan: puan, geribildirim: geribildirim};
+	degerlendirmeler.push(newObj);
+	return degerlendirmeler;
 }
 
-
+console.log(DegerledirmeEkle(degerlendirmeler, 'Hurşut', 2, 'Boktan yemekler!'));
 
 /*  Görev 6: 
 	Dizideki değerlendirmelerin anahtarına(key,index) bağlı olarak bir değerlendirme döndüren bir fonksiyon yazın
@@ -112,12 +138,13 @@ function DegerledirmeEkle(/*Kodlar buraya */){
 */
 
 
-function AnahtardanDegerlendirmeAl(/*Kodlar buraya*/) {
+function AnahtardanDegerlendirmeAl(/*Kodlar buraya*/newArray, arrayIndex) {
 	/*Kodlar buraya*/
-
+	const yeniObject = newArray[arrayIndex];
+	return yeniObject.isim + " isimli kişi " + yeniObject.puan + " puan verdi ve şunları yazdı: " + yeniObject.geribildirim; 
 }
 
-
+console.log(AnahtardanDegerlendirmeAl(degerlendirmeler,0));
 
 /*  Görev 7:  
 	Diziden en son değerlendirmeyi döndüren adı `SonDegerlendirmeyiAl` olan bir fonksiyon yazın 
@@ -132,11 +159,13 @@ function AnahtardanDegerlendirmeAl(/*Kodlar buraya*/) {
 */
 
 
-function SonDegerlendirmeyiAl(/*Kodlar buraya*/) {
+function SonDegerlendirmeyiAl(/*Kodlar buraya*/lastArray) {
 	/*Kodlar buraya*/
+	const newObject = lastArray[lastArray.length - 1];
+	return newObject.isim + " isimli kişi " + newObject.puan + " puan verdi ve şunları yazdı: " + newObject.geribildirim;
 } 
 
-
+console.log(SonDegerlendirmeyiAl(degerlendirmeler));
 
 /////////////// BONUS  GÖRVLER////////////////////
 
@@ -154,11 +183,21 @@ function SonDegerlendirmeyiAl(/*Kodlar buraya*/) {
 	]
 */
 
-function PuanaGoreDegerlendirmeAl(/* Kodlar buraya */) {
+function PuanaGoreDegerlendirmeAl(/* Kodlar buraya */newArray, point) {
     /* Kodlar buraya */
+	const results = [];
+	for (let i = 0; i < newArray.length; i = i + 1) {
+		let varObj = newArray[i];
+		if (varObj.puan >= point && varObj.puan < point + 1) {
+			results.push(varObj);   
+		} 
+	}
+	return results.map(varObj => `${varObj.isim} , puan: ${varObj.puan}, geribildirim:"${varObj.geribildirim}"`);
 }
 
+console.log(PuanaGoreDegerlendirmeAl(degerlendirmeler, 4));
 
+//(varObj.isim + " , puan: " + varObj.puan + ', geribildirim:"' + varObj.geribildirim + '"')
 /*  BONUS 2:    
 	UzunDegerlendirmeleriAl fonksiyonuna aşağıdakileri uygulayın:
 	1. Tüm değerlendirmeleri içeren diziyi alacak
